@@ -1,0 +1,8 @@
+model/
+train_aug/
+test_aug/
+*.zip
+*.pyc
+.vscode/
+*.jpg
+*.png
