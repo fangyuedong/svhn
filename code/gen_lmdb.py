@@ -16,6 +16,8 @@ def svhn_lmdb(dir, no_num=False):
         file_path = os.path.join(dir, 'train.txt')
     elif os.path.exists(os.path.join(dir, 'test.txt')):
         file_path = os.path.join(dir, 'test.txt')
+    elif os.path.exists(os.path.join(dir, 'extra.txt')):
+        file_path = os.path.join(dir, 'extra.txt')
     else:
         raise EnvironmentError
 
@@ -68,6 +70,7 @@ def svhn_lmdb(dir, no_num=False):
     lb_db.close()
 
 if __name__ == '__main__':
+    svhn_lmdb('../extra_aug', no_num=True)
     svhn_lmdb('../test_aug', no_num=True)
     svhn_lmdb('../train_aug', no_num=True)
 

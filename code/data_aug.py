@@ -16,16 +16,18 @@ class SVHN():
     def __init__(self, main_dir, info_fmt=['t', 'b', 'l', 'r', 'lb']):
         self._data_dir = dict()
         self._info = dict()
+        self._data_dir['extra'] = os.path.join(main_dir, 'extra')
         self._data_dir['train'] = os.path.join(main_dir, 'train')
         self._data_dir['test']  = os.path.join(main_dir, 'test')
+        self._info['extra'] = os.path.join(self._data_dir['extra'], 'extra.txt')
         self._info['train'] = os.path.join(self._data_dir['train'], 'train.txt')
         self._info['test']  = os.path.join(self._data_dir['test'], 'test.txt')
-        assert os.path.exists(self._data_dir['train']) and os.path.exists(self._data_dir['test'])
-        assert os.path.exists(self._info['train']) and os.path.exists(self._info['test'])
+        assert os.path.exists(self._data_dir['extra']) and os.path.exists(self._data_dir['train']) and os.path.exists(self._data_dir['test'])
+        assert os.path.exists(self._info['extra']) and os.path.exists(self._info['train']) and os.path.exists(self._info['test'])
         self._fmt = info_fmt
 
     def info_generator(self, phase='train'):
-        assert phase == 'train' or phase == 'test'
+        assert phase == 'extra' or phase == 'train' or phase == 'test'
         with open(self._info[phase], 'r') as f:
             for line in f.readlines():
                 im_path, *info = line.strip('\n').split(' ')
@@ -123,6 +125,7 @@ if __name__ == '__main__':
     # cv2.waitKey()
 
     svhn = SVHN('../')
+    svhn.save_aug('../extra_aug', phase='extra')
     svhn.save_aug('../train_aug', phase='train')
     svhn.save_aug('../test_aug', phase='test')
 

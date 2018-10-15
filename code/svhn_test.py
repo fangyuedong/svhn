@@ -2,6 +2,7 @@
 # -*- coding: UTF-8 -*-
 
 import os, sys
+import shutil
 import numpy as np
 import cv2
 from lib.libcaffe import inference as cf
@@ -45,13 +46,16 @@ def test(dir, prototxt, caffemodel):
             # print(digit_num[i])
 
     count = 0
+    if os.path.exists("../err_ims"):
+        shutil.rmtree("../err_ims")
+    os.mkdir("../err_ims")
     for i in range(len(im_paths)):
         # if labels[i] != "{}{}{}{}{}{}".format(digit0[i], digit1[i], digit2[i], digit3[i], digit4[i], digit5[i])[:digit_num[i]]:
         if labels[i] != ''.join([str(digit) for digit in digits(i)])[:digit_num[i]]:
             count += 1
             im = cv2.imread(im_paths[i])
-            cv2.imshow(im_paths[i]+"_"+labels[i]+"_"+''.join([str(digit) for digit in digits(i)])[:digit_num[i]], im)
-            cv2.waitKey(0)
+            rcg_str = ''.join([str(digit) for digit in digits(i)])[:digit_num[i]]
+            cv2.imwrite(os.path.join("../err_ims", labels[i]+"_"+rcg_str+"_"+im_paths[i].split('/')[-1]), im)
     print(count)
     
 if __name__ == "__main__":
